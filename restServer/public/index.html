@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>REST SERVER NODE</title>
+    
+  </head>
+  <body>
+    <h1>Google SignIN</h1>
+    <div id="g_id_onload"
+         data-client_id="88758552910-12dphuc5vdji8g7iov8cf4p6snpkhdtj.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+      </div>
+      <button id="sOUT">SignOUT</button>
+<script>
+  function handleCredentialResponse(response) {
+     // Google token o id token
+   
+    const googleToken= {id_token:response.credential}
+    fetch("http://localhost:8080/api/auth/google",{
+      method:"POST",
+      headers:{
+        'Content-type':'application/json'
+      },
+      body:JSON.stringify(googleToken)
+    }).then((res)=>{
+      return res.json()
+    }).then((res)=>{
+      localStorage.setItem("correo",res.usuario.correo)
+      console.log(res)
+    }).catch((err)=>{
+      console.log(err)
+    })
+    const btn= document.querySelector("#sOUT")
+    btn.addEventListener("click",()=>{
+      const correo=localStorage.getItem("correo")
+      google.accounts.id.disableAutoSelect()
+      google.accounts.id.revoke(correo,(e)=>{
+        localStorage.clear()
+        location.reload()
+      })
+    })
+  }
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+  </body>
+</html>

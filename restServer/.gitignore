@@ -1,0 +1,4 @@
+node_modules/
+restServer/.env
+.env
+Node/restServer/.env
