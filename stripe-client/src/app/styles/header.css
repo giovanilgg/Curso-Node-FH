@@ -1,0 +1,11 @@
+.encabezado{
+    background-color: blueviolet;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: end;
+}
+.links{
+    margin:0 2rem ;
+    color: white;
+    font-weight: 'bold';
+}

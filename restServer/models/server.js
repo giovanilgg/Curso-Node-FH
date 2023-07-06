@@ -28,7 +28,14 @@ class Server {
     //Cors
     this.app.use(cors());
     //Lectura y parseo del body
-    this.app.use(express.json());
+    this.app.use((req,res,next)=>{
+      if(req.originalUrl==="/api/pago/webhook"){
+        next()
+      }else{
+           express.json()(req,res,next)
+      }
+   
+    });
     //Servir el contenido estatico
     this.app.use(express.static("public"));
     //Carga de archivos
@@ -41,6 +48,7 @@ class Server {
     );
     //Analizador de formulario
     this.app.use(express.urlencoded({ extended: false }));
+   
   }
   routes() {
     this.app.use(this.usuariosPath, require("../routes/user.routes"));
